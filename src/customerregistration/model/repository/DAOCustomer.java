@@ -66,12 +66,14 @@ public class DAOCustomer {
 
 	}
 
-	public Customer readByCpf(String cpf) throws ConnectionException, QueryException {
+	public Customer readByCpf(String cpf) throws ConnectionException, QueryException, ClassNotFoundException {
 
 		String user = "root";
 		String password = "root";
 		String dburl = "jdbc:mysql://localhost:3306/lojaunit?autoReconnect=true&useTimezone=true&serverTimezone=UTC";
 
+		Class.forName("com.mysql.jdbc.Driver");
+		
 		Connection conn;
 		try {
 			conn = DriverManager.getConnection(dburl, user, password);
