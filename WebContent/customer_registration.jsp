@@ -11,7 +11,7 @@
 	<h1>Cadastro Cliente</h1>
 	<form action="CustomerResource" method="POST">
 		Nome: <input type="text" name="name" required="required"/><br/>
-		CPF: <input type="text" name="cpf" /><br/>
+		CPF: <input type="text" name="cpf" required="required"/><br/>
 		E-Mail: <input type="text" name="email" /><br/>
 		Nascimento: <input type="text" name="born"/><br/>
 		Sexo: <input type="text" name="sexo" /><br/>

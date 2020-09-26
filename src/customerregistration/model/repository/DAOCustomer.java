@@ -66,5 +66,54 @@ public class DAOCustomer {
 
 	}
 
-	
+	public Customer readByCpf(String cpf) throws ConnectionException, QueryException {
+
+		String user = "root";
+		String password = "root";
+		String dburl = "jdbc:mysql://localhost:3306/lojaunit?autoReconnect=true&useTimezone=true&serverTimezone=UTC";
+
+		Connection conn;
+		try {
+			conn = DriverManager.getConnection(dburl, user, password);
+		} catch (SQLException e) {
+			throw new ConnectionException(e.getMessage());
+		}
+
+		String sql = "SELECT id, cpf, nome, email, dataNascimento, sexo, nomeSocial, apelido, telefone "
+				+ "FROM clientes WHERE cpf=?";
+
+		PreparedStatement pstm;
+
+		Customer customer = null;
+
+		try {
+			pstm = conn.prepareStatement(sql);
+
+			pstm.setString(1, cpf);
+
+			ResultSet rs = pstm.executeQuery();
+
+			if (rs.next()) {
+
+				String id = rs.getString("id");
+				cpf = rs.getString("cpf");
+				String name = rs.getString("nome");
+				String email = rs.getString("email");
+				String born = rs.getString("dataNascimento");
+				String sexo = rs.getString("sexo");
+				String social = rs.getString("nomeSocial");
+				String nickname = rs.getString("apelido");
+				String phone = rs.getString("telefone");
+
+				customer = new Customer(name, cpf, email, born, sexo, social, nickname, phone);
+
+			}
+		} catch (SQLException e) {
+			throw new QueryException(e.getMessage());
+		}
+
+		return customer;
+
+	}
+
 }

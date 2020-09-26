@@ -32,8 +32,6 @@ public class CustomerResource extends HttpServlet {
 			throws ServletException, IOException {
 		// response.getWriter().append("Served at POST:
 		// ").append(request.getContextPath());
-
-		
 		
 		String name = request.getParameter("name");
 		String cpf = request.getParameter("cpf");
