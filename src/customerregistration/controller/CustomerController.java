@@ -1,31 +1,33 @@
 package customerregistration.controller;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import customerregistration.model.Customer;
+import customerregistration.model.repository.DAOCustomer;
+import customerregistration.model.repository.exception.ConnectionException;
+import customerregistration.model.repository.exception.InsertionException;
 
-/**
- * Servlet implementation class CustomerController
- */
-@WebServlet("/CustomerController")
-public class CustomerController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		response.getWriter().append("Served at GET: ").append(request.getContextPath());
-	}
-
+public class CustomerController {
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		response.getWriter().append("Served at POST: ").append(request.getContextPath());
+	public Customer create(Customer customer) throws Exception {
 		
 		
+		DAOCustomer daoCustomer = new DAOCustomer();
+		
+		try {
+			
+			daoCustomer.create(customer);
+			
+		} catch (ConnectionException e) {
+			
+			throw new Exception("Connection Error! " + e.getMessage());
+			
+		} catch ( InsertionException e) {
+		
+			throw new Exception("Insertion Error! " + e.getMessage());	
+			
+		}
+		
+		
+		return customer;	
 	}
 
 }

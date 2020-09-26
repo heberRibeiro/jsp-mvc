@@ -11,12 +11,12 @@
   </welcome-file-list>
   
   <servlet>
-  	<servlet-name>CustomerController</servlet-name>
-  	<servlet-class>customerregistration.controller.CustomerController</servlet-class>
+  	<servlet-name>CustomerResource</servlet-name>
+  	<servlet-class>customerregistration.resource.CustomerResource</servlet-class>
   </servlet>
   
   <servlet-mapping>
-  	<servlet-name>CustomerController</servlet-name>
+  	<servlet-name>CustomerResource</servlet-name>
   	<url-pattern>/customer</url-pattern>
   </servlet-mapping>
   
