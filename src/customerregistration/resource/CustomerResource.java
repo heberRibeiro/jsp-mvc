@@ -1,7 +1,6 @@
 package customerregistration.resource;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,9 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import customerregistration.controller.CustomerController;
 import customerregistration.model.Customer;
-import customerregistration.model.repository.DAOCustomer;
-import customerregistration.model.repository.exception.ConnectionException;
-import customerregistration.model.repository.exception.InsertionException;
 
 /**
  * Servlet implementation class CustomerController

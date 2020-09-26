@@ -1,43 +1,35 @@
-package customerregistration.model.repository;
+package customerregistration.repository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import customerregistration.model.Customer;
-import customerregistration.model.repository.exception.ConnectionException;
-import customerregistration.model.repository.exception.InsertionException;
-import customerregistration.model.repository.exception.QueryException;
+import customerregistration.repository.exception.ConnectionException;
+import customerregistration.repository.exception.InsertionException;
+import customerregistration.repository.exception.QueryException;
+import customerregistration.resource.db.DB;
+import customerregistration.resource.db.DbException;
 
 public class DAOCustomer {
-
-	// private Customer customer;
 
 	public DAOCustomer() {
 
 	}
 
-	public Customer create(Customer customer) throws ConnectionException, InsertionException, ClassNotFoundException {
-		
-		String user = "root";
-		String password = "root";
-		String dburl = "jdbc:mysql://localhost:3306/lojaunit?useTimezone=true&serverTimezone=UTC";
+	public Customer create(Customer customer) throws InsertionException, ConnectionException {
 
-		Class.forName("com.mysql.jdbc.Driver");
-		
-		Connection conn;
-		
+		Connection conn = null;
+
 		try {
-			
-			conn = DriverManager.getConnection(dburl, user, password);
-			
-		} catch (SQLException e) {
-			
+			conn = DB.getConnection();
+
+		} catch (DbException e) {
+
 			throw new ConnectionException(e.getMessage());
 		}
-		
+
 		String sql = "INSERT INTO clientes (cpf, nome, email, dataNascimento, sexo, nomeSocial, apelido, telefone) "
 				+ "VALUES (?,?,?,?,?,?,?,?)";
 
@@ -45,7 +37,7 @@ public class DAOCustomer {
 
 		try {
 			pstm = conn.prepareStatement(sql);
-			
+
 			pstm.setString(1, customer.getCpf());
 			pstm.setString(2, customer.getName());
 			pstm.setString(3, customer.getEmail());
@@ -54,13 +46,16 @@ public class DAOCustomer {
 			pstm.setString(6, customer.getSocial());
 			pstm.setString(7, customer.getNickname());
 			pstm.setString(8, customer.getPhone());
-			
+
 			pstm.executeUpdate();
 
 		} catch (SQLException e) {
-			
+
 			throw new InsertionException(e.getMessage());
 		}
+
+		DB.closeStatement(pstm);
+		DB.closeConnection();
 
 		return customer;
 
@@ -68,19 +63,15 @@ public class DAOCustomer {
 
 	public Customer readByCpf(String cpf) throws ConnectionException, QueryException, ClassNotFoundException {
 
-		String user = "root";
-		String password = "root";
-		String dburl = "jdbc:mysql://localhost:3306/lojaunit?autoReconnect=true&useTimezone=true&serverTimezone=UTC";
+		Connection conn = null;
 
-		Class.forName("com.mysql.jdbc.Driver");
-		
-		Connection conn;
 		try {
-			conn = DriverManager.getConnection(dburl, user, password);
-		} catch (SQLException e) {
+			conn = DB.getConnection();
+
+		} catch (DbException e) {
+
 			throw new ConnectionException(e.getMessage());
 		}
-
 		String sql = "SELECT id, cpf, nome, email, dataNascimento, sexo, nomeSocial, apelido, telefone "
 				+ "FROM clientes WHERE cpf=?";
 
@@ -97,7 +88,6 @@ public class DAOCustomer {
 
 			if (rs.next()) {
 
-				String id = rs.getString("id");
 				cpf = rs.getString("cpf");
 				String name = rs.getString("nome");
 				String email = rs.getString("email");
@@ -108,11 +98,17 @@ public class DAOCustomer {
 				String phone = rs.getString("telefone");
 
 				customer = new Customer(name, cpf, email, born, sexo, social, nickname, phone);
+				
+				DB.closeResultSet(rs);
 
 			}
 		} catch (SQLException e) {
 			throw new QueryException(e.getMessage());
 		}
+		
+		
+		DB.closeStatement(pstm);
+		DB.closeConnection();
 
 		return customer;
 

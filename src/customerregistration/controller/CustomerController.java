@@ -3,9 +3,9 @@ package customerregistration.controller;
 import customerregistration.controller.exception.DuplicateCpfException;
 import customerregistration.controller.exception.MandatoryParameterException;
 import customerregistration.model.Customer;
-import customerregistration.model.repository.DAOCustomer;
-import customerregistration.model.repository.exception.ConnectionException;
-import customerregistration.model.repository.exception.InsertionException;
+import customerregistration.repository.DAOCustomer;
+import customerregistration.repository.exception.ConnectionException;
+import customerregistration.repository.exception.InsertionException;
 
 public class CustomerController {
 	
